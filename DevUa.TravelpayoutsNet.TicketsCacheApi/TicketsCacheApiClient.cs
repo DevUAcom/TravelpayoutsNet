@@ -69,7 +69,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
             string originIata = null,
             string desinationIata = null,
             DateTime? beginningOfPeriod = null,
-            bool periodTypeMonth = false,
+            bool? periodTypeMonth = null,
             bool? oneWay = null,
             int? page = null,
             int? limit = null,
@@ -78,7 +78,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
             int? tripDurationInWeeks = null
         )
         {
-            if (periodTypeMonth && !beginningOfPeriod.HasValue)
+            if (periodTypeMonth.HasValue && periodTypeMonth.Value && !beginningOfPeriod.HasValue)
             {
                 throw new ArgumentException("For the PeriodType = Month the BeginningOfPeriod must be specified!");
             }
@@ -90,13 +90,13 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
             {
                 query.Add(QueryParams.Token, _token);
             }
-            query.Add(QueryParams.PeriodType, periodTypeMonth ? "month" : "year");
 
             query
                 .AddValueIfNotNull(QueryParams.Currency, currency)
                 .AddValueIfNotNull(QueryParams.Origin, originIata)
                 .AddValueIfNotNull(QueryParams.Destination, desinationIata)
                 .AddValueIfNotNull(QueryParams.BeginningOfPeriod, beginningOfPeriod)
+                .AddValueIfNotNull(QueryParams.PeriodType, periodTypeMonth.HasValue ? periodTypeMonth.Value ? "month" : "year" : null)
                 .AddValueIfNotNull(QueryParams.OneWay, oneWay)
                 .AddValueIfNotNull(QueryParams.Page, page)
                 .AddValueIfNotNull(QueryParams.Limit, limit)

@@ -19,10 +19,6 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Test
             var mockHttp = new MockHttpMessageHandler();
             mockHttp
                 .Expect(ApiEndPoints.ApiBaseUrl + ApiEndPoints.Latest)
-                .WithExactQueryString(new Dictionary<string, string>()
-                {
-                    { QueryParams.PeriodType, "year" },
-                })
                 .WithHeaders(new Dictionary<string, string>
                 {
                     { "X-Access-Token", ApiToken },
@@ -38,7 +34,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Test
         }
 
         [Fact]
-        public async Task GetLatestAsyncShouldContainPeroidTypeAndTokenQueryStrings()
+        public async Task GetLatestAsyncShouldContainTokenQueryString()
         {
 
             var mockHttp = new MockHttpMessageHandler();
@@ -46,7 +42,6 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Test
                 .Expect(ApiEndPoints.ApiBaseUrl + ApiEndPoints.Latest)
                 .WithExactQueryString(new Dictionary<string, string>()
                 {
-                    { QueryParams.PeriodType, "year" },
                     { QueryParams.Token, ApiToken },
                 })
                 .Respond("application/json", JsonResponseHelper.GetJsonResponse("LatestSuccess"))
@@ -76,7 +71,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Test
             var httpClient = mockHttp.ToHttpClient();
             var apiClient = new TicketsCacheApiClient(ApiToken, httpClient) {AcceptGzip = false};
 
-            var tickets = await apiClient.GetLatestAsync(originIata: "KBP", desinationIata: "BKK");
+            var tickets = await apiClient.GetLatestAsync(originIata: "KBP", desinationIata: "BKK", periodTypeMonth: false);
 
             tickets.ShouldNotBeNull();
             mockHttp.VerifyNoOutstandingExpectation();
