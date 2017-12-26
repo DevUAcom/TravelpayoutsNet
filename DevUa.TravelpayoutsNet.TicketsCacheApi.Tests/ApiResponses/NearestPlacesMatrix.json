@@ -1,0 +1,95 @@
+{
+    "success": true,
+    "data": {
+        "prices": [
+            {
+                "value": 51155,
+                "trip_class": 0,
+                "show_to_affiliates": true,
+                "return_date": "2018-01-22",
+                "origin": "IEV",
+                "number_of_changes": 0,
+                "gate": "UIA",
+                "found_at": "2017-12-26T07:06:51",
+                "duration": 680,
+                "distance": 7431,
+                "destination": "BKK",
+                "depart_date": "2018-01-10",
+                "actual": true
+            },
+            {
+                "value": 29847,
+                "trip_class": 0,
+                "show_to_affiliates": true,
+                "return_date": "2018-01-25",
+                "origin": "IEV",
+                "number_of_changes": 1,
+                "gate": "Airtickets",
+                "found_at": "2017-12-26T13:02:04",
+                "duration": 1790,
+                "distance": 7431,
+                "destination": "BKK",
+                "depart_date": "2018-01-12",
+                "actual": true
+            },
+            {
+                "value": 37118,
+                "trip_class": 0,
+                "show_to_affiliates": true,
+                "return_date": "2018-01-25",
+                "origin": "IEV",
+                "number_of_changes": 2,
+                "gate": "Vayama",
+                "found_at": "2017-12-26T10:00:33",
+                "duration": 2615,
+                "distance": 7431,
+                "destination": "BKK",
+                "depart_date": "2018-01-10",
+                "actual": true
+            },
+            {
+                "value": 76146,
+                "trip_class": 0,
+                "show_to_affiliates": true,
+                "return_date": "2018-01-20",
+                "origin": "IEV",
+                "number_of_changes": 2,
+                "gate": "Tickets.ru",
+                "found_at": "2017-12-25T16:09:56",
+                "duration": 2195,
+                "distance": 7557,
+                "destination": "UTP",
+                "depart_date": "2018-01-10",
+                "actual": true
+            }
+        ],
+        "origins": [
+            "IEV",
+            "VIN",
+            "GME"
+        ],
+        "errors": {
+            "amadeus": {
+                "VIN": {
+                    "freeText": "No price result found",
+                    "errorCode": "1014",
+                    "errorCategory": "EC"
+                },
+                "GME": {
+                    "freeText": "No price result found",
+                    "errorCode": "1014",
+                    "errorCategory": "EC"
+                }
+            }
+        },
+        "destinations": [
+            "BKK",
+            "PYX",
+            "UTP",
+            "HHQ",
+            "MGZ",
+            "TVY",
+            "TDX"
+        ]
+    }
+}

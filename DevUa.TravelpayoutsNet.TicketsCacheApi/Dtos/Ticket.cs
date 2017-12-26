@@ -21,7 +21,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Dtos
         public DateTime DepartDate { get; set; }
 
         [JsonProperty("return_date")]
-        public DateTime ReturnDate { get; set; }
+        public DateTime? ReturnDate { get; set; }
 
         [JsonProperty("number_of_changes")]
         public int NumberOfChanges { get; set; }
@@ -37,5 +37,11 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Dtos
 
         [JsonProperty("actual")]
         public bool Actual { get; set; }
+
+        [JsonProperty("duration")]
+        public int? Duration { get; set; }
+
+        [JsonProperty("gate")]
+        public string Gate { get; set; }
     }
 }

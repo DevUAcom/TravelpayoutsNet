@@ -1,14 +1,15 @@
 ﻿using System.Threading.Tasks;
 using DevUa.TravelpayoutsNet.TicketsCacheApi.ApiStrings;
 using DevUa.TravelpayoutsNet.TicketsCacheApi.Exceptions;
+using DevUa.TravelpayoutsNet.TicketsCacheApi.Test;
 using Ploeh.AutoFixture;
 using RichardSzalay.MockHttp;
 using Shouldly;
 using Xunit;
 
-namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Test
+namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests
 {
-    public class TicketsCacheApiClientTests
+    public class GetLatestAsyncTests
     {
         [Fact]
         public async Task GetLatestAsyncShouldReturnTicketArray()

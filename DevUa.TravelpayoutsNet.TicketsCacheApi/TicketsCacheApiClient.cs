@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
@@ -84,12 +85,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
             }
 
             SetHeaders();
-
-            var query = HttpUtility.ParseQueryString(String.Empty);
-            if (SendTokenInQueryString)
-            {
-                query.Add(QueryParams.Token, _token);
-            }
+            var query = GetQueryString();
 
             query
                 .AddValueIfNotNull(QueryParams.Currency, currency)
@@ -107,16 +103,9 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
 
             HttpResponseMessage response = await _client.GetAsync($"{ApiEndPoints.Latest}?{query}");
             response.EnsureSuccessStatusCode();
-            string jsonString;
 
-            using(Stream stream = await response.Content.ReadAsStreamAsync())
-            using(Stream decompressed = AcceptGzip ? new GZipStream(stream, CompressionMode.Decompress) : stream)
-            using(StreamReader reader = new StreamReader(decompressed))
-            {
-                jsonString = reader.ReadToEnd();
-            }
+            var jsonString = await GetJsonString(response);
 
-            //string jsonString = await response.Content.ReadAsStringAsync();
             var apiResponse  = JsonConvert.DeserializeObject<ApiResponse>(jsonString);
             if (!apiResponse.Success)
             {
@@ -125,6 +114,106 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
 
             return apiResponse.Data;
         }
+
+        public async Task<Ticket[]> GetMonthMatrixAsync(
+            Currency? currency = null,
+            string originIata = null,
+            string desinationIata = null,
+            bool? showToAffiliates = null,
+            DateTime? month = null
+        )
+        {
+            SetHeaders();
+            var query = GetQueryString();
+
+            query
+                .AddValueIfNotNull(QueryParams.Currency, currency)
+                .AddValueIfNotNull(QueryParams.Origin, originIata)
+                .AddValueIfNotNull(QueryParams.Destination, desinationIata)
+                .AddValueIfNotNull(QueryParams.ShowToAffiliates, showToAffiliates)
+                .AddValueIfNotNull(QueryParams.Month, month)
+                ;
+
+            HttpResponseMessage response = await _client.GetAsync($"{ApiEndPoints.MonthMatrix}?{query}");
+            response.EnsureSuccessStatusCode();
+
+            var jsonString = await GetJsonString(response);
+
+            var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(jsonString);
+            if(!apiResponse.Success)
+            {
+                throw new TicketsCacheApiException(apiResponse.Message);
+            }
+
+            return apiResponse.Data;
+        }
+
+        public async Task<DetailDataResponse> GetNearestPlacesMatrixAsync(
+            Currency? currency = null,
+            string originIata = null,
+            string desinationIata = null,
+            bool? showToAffiliates = null,
+            DateTime? departDate = null,
+            DateTime? returnDate = null,
+            int? distance = null,
+            int? limit = null,
+            int? flexibility = null
+        )
+        {
+            SetHeaders();
+            var query = GetQueryString();
+
+            query
+                .AddValueIfNotNull(QueryParams.Currency, currency)
+                .AddValueIfNotNull(QueryParams.Origin, originIata)
+                .AddValueIfNotNull(QueryParams.Destination, desinationIata)
+                .AddValueIfNotNull(QueryParams.ShowToAffiliates, showToAffiliates)
+                .AddValueIfNotNull(QueryParams.DepartDate, departDate)
+                .AddValueIfNotNull(QueryParams.ReturnDate, returnDate)
+                .AddValueIfNotNull(QueryParams.Distance, distance)
+                .AddValueIfNotNull(QueryParams.Limit, limit)
+                .AddValueIfNotNull(QueryParams.Flexibilty, flexibility)
+                ;
+
+            HttpResponseMessage response = await _client.GetAsync($"{ApiEndPoints.NearestPlacesMatrix}?{query}");
+            response.EnsureSuccessStatusCode();
+
+            var jsonString = await GetJsonString(response);
+
+            var apiResponse = JsonConvert.DeserializeObject<ApiDetailResponse>(jsonString);
+            if(!apiResponse.Success)
+            {
+                throw new TicketsCacheApiException(apiResponse.Message);
+            }
+
+            return apiResponse.Data;
+        }
+
+        private async Task<string> GetJsonString(HttpResponseMessage response)
+        {
+            string jsonString;
+            using (Stream stream = await response.Content.ReadAsStreamAsync())
+            using (Stream decompressed = AcceptGzip ? new GZipStream(stream, CompressionMode.Decompress) : stream)
+            using (StreamReader reader = new StreamReader(decompressed))
+            {
+                jsonString = reader.ReadToEnd();
+            }
+
+            return jsonString;
+        }
+
+
+        private NameValueCollection GetQueryString()
+        {
+            var query = HttpUtility.ParseQueryString(String.Empty);
+            if (SendTokenInQueryString)
+            {
+                query.Add(QueryParams.Token, _token);
+            }
+
+            return query;
+        }
+
 
         private void SetHeaders()
         {

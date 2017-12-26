@@ -14,6 +14,8 @@
 
   <ItemGroup>
     <None Remove="ApiResponses\LatestSuccess.json" />
+    <None Remove="ApiResponses\MonthMatrixSuccess.json" />
+    <None Remove="ApiResponses\NearestPlacesMatrix.json" />
     <None Remove="ApiResponses\Unauthorized.json" />
   </ItemGroup>
 
@@ -29,6 +31,8 @@
 
   <ItemGroup>
     <EmbeddedResource Include="ApiResponses\LatestSuccess.json" />
+    <EmbeddedResource Include="ApiResponses\MonthMatrixSuccess.json" />
+    <EmbeddedResource Include="ApiResponses\NearestPlacesMatrix.json" />
     <EmbeddedResource Include="ApiResponses\Unauthorized.json" />
   </ItemGroup>
 

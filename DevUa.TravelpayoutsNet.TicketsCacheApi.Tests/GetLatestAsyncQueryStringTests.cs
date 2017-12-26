@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DevUa.TravelpayoutsNet.TicketsCacheApi.ApiStrings;
+using DevUa.TravelpayoutsNet.TicketsCacheApi.Test;
 using RichardSzalay.MockHttp;
 using Shouldly;
 using Xunit;
 
-namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Test
+namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests
 {
-    public class TicketsCacheApiClientQueryStringTests
+    public class GetLatestAsyncQueryStringTests
     {
         private const string ApiToken = "API_TOKEN";
 
