@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Specialized;
 using System.Web;
+using AutoFixture;
 using DevUa.TravelpayoutsNet.TicketsCacheApi.Helpers;
-using Ploeh.AutoFixture;
 using Shouldly;
 using Xunit;
 
-namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Test
+namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests
 {
     public class NameValueCollectionHelperTests
     {

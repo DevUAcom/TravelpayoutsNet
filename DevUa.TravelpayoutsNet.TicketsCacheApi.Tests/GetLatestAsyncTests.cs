@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
+using AutoFixture;
 using DevUa.TravelpayoutsNet.TicketsCacheApi.ApiStrings;
 using DevUa.TravelpayoutsNet.TicketsCacheApi.Exceptions;
-using DevUa.TravelpayoutsNet.TicketsCacheApi.Test;
-using Ploeh.AutoFixture;
 using RichardSzalay.MockHttp;
 using Shouldly;
 using Xunit;
