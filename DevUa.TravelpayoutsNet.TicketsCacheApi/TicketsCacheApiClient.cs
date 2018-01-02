@@ -23,7 +23,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
         /// <summary>
         /// The constructor
         /// </summary>
-        /// <see cref="https://www.travelpayouts.com/developers/api"/>
+        /// <see href="https://www.travelpayouts.com/developers/api"/>
         /// <param name="token">Your API token.</param>
         /// <param name="client">(optional) HttpClient object</param>
         public TicketsCacheApiClient(string token, HttpClient client = null)
@@ -52,7 +52,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
         /// during the most recent 48 hours according to the filters used.
         /// All parameters are optional. If a parameter is skipped the API default will be used.
         /// </summary>
-        /// <see cref="https://support.travelpayouts.com/hc/en-us/articles/203956163-Travel-insights-with-Travelpayouts-Data-API#the_prices_for_the_airline_tickets"/>
+        /// <see href="https://support.travelpayouts.com/hc/en-us/articles/203956163-Travel-insights-with-Travelpayouts-Data-API#the_prices_for_the_airline_tickets"/>
         /// <param name="currency">The currency of the airline ticket</param>
         /// <param name="originIata">The point of departure. The IATA city code or the country code. The length - from 2 to 3 symbols.</param>
         /// <param name="desinationIata">The point of destination. The IATA city code or the country code. The length - from 2 to 3 symbols.</param>

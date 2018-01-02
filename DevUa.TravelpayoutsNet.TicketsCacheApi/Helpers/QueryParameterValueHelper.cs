@@ -10,8 +10,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Helpers
         {
             Type enumType = enumValue.GetType();
             FieldInfo fi = enumType.GetField(enumValue.ToString());
-            QueryParameterValueAttribute[] attrs = fi.GetCustomAttributes(typeof(QueryParameterValueAttribute), false) as QueryParameterValueAttribute[];
-            if (attrs != null && attrs.Length > 0)
+            if (fi.GetCustomAttributes(typeof(QueryParameterValueAttribute), false) is QueryParameterValueAttribute[] attrs && attrs.Length > 0)
             {
                 return attrs[0].Value;
             }

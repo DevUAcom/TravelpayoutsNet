@@ -29,14 +29,9 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Helpers
             if (value.HasValue)
             {
                 Enum enumValue = value.Value as Enum;
-                if (enumValue != null)
-                {
-                    nameValueCollection.Add(name, enumValue.GetQueryParameterValue());
-                }
-                else
-                {
-                    nameValueCollection.Add(name, value.Value.ToString().ToLower());
-                }
+                nameValueCollection.Add(name,
+                    enumValue != null ? enumValue.GetQueryParameterValue() : value.Value.ToString().ToLower()
+                );
             }
             return nameValueCollection;
         }

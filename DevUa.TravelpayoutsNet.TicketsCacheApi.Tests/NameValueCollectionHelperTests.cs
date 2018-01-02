@@ -38,10 +38,9 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests
             // Arrange
             Fixture fixture = new Fixture();
             string name = fixture.Create<string>();
-            string value = null;
 
             // Act
-            _query.AddValueIfNotNull(name, value);
+            _query.AddValueIfNotNull(name, (string) null);
 
             // Assert
             _query.ToString().ShouldBe("");
