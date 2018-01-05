@@ -115,6 +115,16 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
             return apiResponse.Data;
         }
 
+        /// <summary>
+        /// Brings back the prices for each day of a month, grouped together by number of transfers.
+        /// </summary>
+        /// <see href="https://support.travelpayouts.com/hc/en-us/articles/203956163#the_calendar_of_prices_for_a_month"/>
+        /// <param name="currency">The currency of the airline ticket</param>
+        /// <param name="originIata">The point of departure. The IATA city code or the country code. The length - from 2 to 3 symbols.</param>
+        /// <param name="desinationIata">The point of destination. The IATA city code or the country code. The length - from 2 to 3 symbols.</param>
+        /// <param name="showToAffiliates">False - all the prices, true - just the prices, found using the partner marker (recommended). </param>
+        /// <param name="month">The beginning of the month</param>
+        /// <returns>Array of Ticket objects</returns>
         public async Task<Ticket[]> GetMonthMatrixAsync(
             Currency? currency = null,
             string originIata = null,
