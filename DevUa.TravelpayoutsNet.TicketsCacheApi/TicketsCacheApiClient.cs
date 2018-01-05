@@ -158,6 +158,20 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
             return apiResponse.Data;
         }
 
+        /// <summary>
+        /// Brings back the prices for the directions between the nearest to the target cities.
+        /// </summary>
+        /// <see href="https://support.travelpayouts.com/hc/en-us/articles/203956163#the_prices_for_the_alternative_directions"/>
+        /// <param name="currency">The currency of the airline ticket</param>
+        /// <param name="originIata">The point of departure. The IATA city code or the country code. The length - from 2 to 3 symbols.</param>
+        /// <param name="desinationIata">The point of destination. The IATA city code or the country code. The length - from 2 to 3 symbols.</param>
+        /// <param name="showToAffiliates">False - all the prices, true - just the prices, found using the partner marker (recommended). </param>
+        /// <param name="departDate">The month of departure</param>
+        /// <param name="returnDate"></param>
+        /// <param name="distance"></param>
+        /// <param name="limit"></param>
+        /// <param name="flexibility"></param>
+        /// <returns></returns>
         public async Task<DetailDataResponse> GetNearestPlacesMatrixAsync(
             Currency? currency = null,
             string originIata = null,

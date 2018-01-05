@@ -17,7 +17,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests
             var mockHttp = new MockHttpMessageHandler();
             mockHttp
                 .When(ApiEndPoints.ApiBaseUrl + ApiEndPoints.NearestPlacesMatrix)
-                .Respond("application/json", JsonResponseHelper.GetJsonResponse("NearestPlacesMatrix"))
+                .Respond("application/json", JsonResponseHelper.GetJsonResponse("NearestPlacesMatrixSuccess"))
             ;
             var httpClient = mockHttp.ToHttpClient();
             var apiClient = new TicketsCacheApiClient(fixture.Create<string>(), httpClient) {AcceptGzip = false};
