@@ -26,7 +26,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests
                 })
                 .Respond("application/json", JsonResponseHelper.GetJsonResponse("LatestSuccess"))
             ;
-            var apiClient = new TicketsCacheApiClient(ApiToken, mockHttp.ToHttpClient()) {AcceptGzip = false};
+            var apiClient = new TicketsCacheApiClient(ApiToken, false, false, mockHttp.ToHttpClient());
 
             await apiClient.GetLatestAsync();
 
@@ -46,7 +46,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests
                 })
                 .Respond("application/json", JsonResponseHelper.GetJsonResponse("LatestSuccess"))
             ;
-            var apiClient = new TicketsCacheApiClient(ApiToken, mockHttp.ToHttpClient()) {AcceptGzip = false, SendTokenInQueryString = true};
+            var apiClient = new TicketsCacheApiClient(ApiToken, false, true, mockHttp.ToHttpClient());
 
             await apiClient.GetLatestAsync();
 
@@ -69,7 +69,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests
                 .Respond("application/json", JsonResponseHelper.GetJsonResponse("LatestSuccess"))
             ;
             var httpClient = mockHttp.ToHttpClient();
-            var apiClient = new TicketsCacheApiClient(ApiToken, httpClient) {AcceptGzip = false};
+            var apiClient = new TicketsCacheApiClient(ApiToken, false, false, httpClient);
 
             var tickets = await apiClient.GetLatestAsync(originIata: "KBP", desinationIata: "BKK", periodTypeMonth: false);
 
@@ -106,7 +106,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests
                 .Respond("application/json", JsonResponseHelper.GetJsonResponse("LatestSuccess"))
             ;
             var httpClient = mockHttp.ToHttpClient();
-            var apiClient = new TicketsCacheApiClient(ApiToken, httpClient) {AcceptGzip = false};
+            var apiClient = new TicketsCacheApiClient(ApiToken, false, false, httpClient);
 
             var tickets = await apiClient.GetLatestAsync(
                 currency: Enums.Currency.Usd,

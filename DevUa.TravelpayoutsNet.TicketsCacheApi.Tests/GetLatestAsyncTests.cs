@@ -20,7 +20,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests
                 .Respond("application/json", JsonResponseHelper.GetJsonResponse("LatestSuccess"))
             ;
             var httpClient = mockHttp.ToHttpClient();
-            var apiClient = new TicketsCacheApiClient(fixture.Create<string>(), httpClient) {AcceptGzip = false};
+            var apiClient = new TicketsCacheApiClient(fixture.Create<string>(), false, false, httpClient);
 
             var tickets = await apiClient.GetLatestAsync();
 
@@ -58,7 +58,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests
                 .Respond("application/json", JsonResponseHelper.GetJsonResponse("Unauthorized"))
                 ;
             var httpClient = mockHttp.ToHttpClient();
-            var apiClient = new TicketsCacheApiClient(fixture.Create<string>(), httpClient) {AcceptGzip = false};
+            var apiClient = new TicketsCacheApiClient(fixture.Create<string>(), false, false, httpClient);
 
             apiClient.GetLatestAsync().ShouldThrow(typeof(TicketsCacheApiException));
 

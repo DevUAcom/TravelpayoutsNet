@@ -26,7 +26,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests
                 })
                 .Respond("application/json", JsonResponseHelper.GetJsonResponse("NearestPlacesMatrixSuccess"))
             ;
-            var apiClient = new TicketsCacheApiClient(ApiToken, mockHttp.ToHttpClient()) {AcceptGzip = false};
+            var apiClient = new TicketsCacheApiClient(ApiToken, false, false, mockHttp.ToHttpClient());
 
             await apiClient.GetNearestPlacesMatrixAsync();
 
@@ -46,7 +46,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests
                 })
                 .Respond("application/json", JsonResponseHelper.GetJsonResponse("NearestPlacesMatrixSuccess"))
             ;
-            var apiClient = new TicketsCacheApiClient(ApiToken, mockHttp.ToHttpClient()) {AcceptGzip = false, SendTokenInQueryString = true};
+            var apiClient = new TicketsCacheApiClient(ApiToken, false, true, mockHttp.ToHttpClient());
 
             await apiClient.GetNearestPlacesMatrixAsync();
 
@@ -68,7 +68,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests
                 .Respond("application/json", JsonResponseHelper.GetJsonResponse("NearestPlacesMatrixSuccess"))
             ;
             var httpClient = mockHttp.ToHttpClient();
-            var apiClient = new TicketsCacheApiClient(ApiToken, httpClient) {AcceptGzip = false};
+            var apiClient = new TicketsCacheApiClient(ApiToken, false, false, httpClient);
 
             var tickets = await apiClient.GetNearestPlacesMatrixAsync(originIata: "KBP", desinationIata: "BKK");
 
@@ -104,7 +104,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests
                 .Respond("application/json", JsonResponseHelper.GetJsonResponse("NearestPlacesMatrixSuccess"))
             ;
             var httpClient = mockHttp.ToHttpClient();
-            var apiClient = new TicketsCacheApiClient(ApiToken, httpClient) {AcceptGzip = false};
+            var apiClient = new TicketsCacheApiClient(ApiToken, false, false, httpClient);
 
             var tickets = await apiClient.GetNearestPlacesMatrixAsync(
                 currency: Enums.Currency.Usd,
