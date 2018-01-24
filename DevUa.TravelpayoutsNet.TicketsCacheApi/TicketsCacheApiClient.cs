@@ -104,16 +104,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
                 .AddValueIfNotNull(QueryParams.TripDuration, tripDurationInWeeks)
             ;
 
-            HttpResponseMessage response = await _client.GetAsync($"{ApiEndPoints.Latest}?{query}");
-            response.EnsureSuccessStatusCode();
-
-            var jsonString = await GetJsonString(response);
-
-            var apiResponse  = JsonConvert.DeserializeObject<ApiResponse>(jsonString);
-            if (!apiResponse.Success)
-            {
-                throw new TicketsCacheApiException(apiResponse.Message);
-            }
+            var apiResponse = await GetApiResponse<ApiTicketResponse>(ApiEndPoints.Latest, query);
 
             return apiResponse.Data;
         }
@@ -146,16 +137,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
                 .AddValueIfNotNull(QueryParams.Month, month)
                 ;
 
-            HttpResponseMessage response = await _client.GetAsync($"{ApiEndPoints.MonthMatrix}?{query}");
-            response.EnsureSuccessStatusCode();
-
-            var jsonString = await GetJsonString(response);
-
-            var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(jsonString);
-            if(!apiResponse.Success)
-            {
-                throw new TicketsCacheApiException(apiResponse.Message);
-            }
+            var apiResponse = await GetApiResponse<ApiTicketResponse>(ApiEndPoints.MonthMatrix, query);
 
             return apiResponse.Data;
         }
@@ -200,18 +182,30 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
                 .AddValueIfNotNull(QueryParams.Flexibilty, flexibility)
                 ;
 
-            HttpResponseMessage response = await _client.GetAsync($"{ApiEndPoints.NearestPlacesMatrix}?{query}");
+            var apiResponse = await GetApiResponse<ApiDetailResponse>(ApiEndPoints.NearestPlacesMatrix, query);
+
+            return apiResponse.Data;
+        }
+
+        private async Task<T> GetApiResponse<T>(string apiMethodName, NameValueCollection query)
+            where T : ApiResponse
+        {
+            HttpResponseMessage response = await _client.GetAsync($"{apiMethodName}?{query}");
             response.EnsureSuccessStatusCode();
 
-            var jsonString = await GetJsonString(response);
+            string jsonString = await GetJsonString(response);
+            var apiResponse = JsonConvert.DeserializeObject<T>(jsonString);
+            EnsureSuccessResponse(apiResponse);
 
-            var apiResponse = JsonConvert.DeserializeObject<ApiDetailResponse>(jsonString);
-            if(!apiResponse.Success)
+            return apiResponse;
+        }
+
+        private void EnsureSuccessResponse<T>(T apiResponse) where T : ApiResponse
+        {
+            if (!apiResponse.Success)
             {
                 throw new TicketsCacheApiException(apiResponse.Message);
             }
-
-            return apiResponse.Data;
         }
 
         private async Task<string> GetJsonString(HttpResponseMessage response)

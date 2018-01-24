@@ -2,15 +2,9 @@
 
 namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Dtos
 {
-    internal class ApiDetailResponse
+    internal class ApiDetailResponse : ApiResponse
     {
-        [JsonProperty("success")]
-        public bool Success { get; set; }
-
         [JsonProperty("data")]
         public DetailDataResponse Data { get; set; }
-
-        [JsonProperty("message")]
-        public string Message { get; set; }
     }
 }

@@ -7,9 +7,6 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Dtos
         [JsonProperty("success")]
         public bool Success { get; set; }
 
-        [JsonProperty("data")]
-        public Ticket[] Data { get; set; }
-
         [JsonProperty("message")]
         public string Message { get; set; }
     }

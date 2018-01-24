@@ -13,7 +13,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests
         private const string ApiToken = "API_TOKEN";
 
         [Fact]
-        public async Task GetLatestAsyncShouldContainPeroidTypeQueryStrings()
+        public async Task GetLatestAsyncShouldNotContainQueryStrings()
         {
 
             var mockHttp = new MockHttpMessageHandler();
