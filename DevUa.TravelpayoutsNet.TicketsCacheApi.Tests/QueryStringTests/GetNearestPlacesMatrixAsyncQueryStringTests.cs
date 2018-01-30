@@ -6,7 +6,7 @@ using RichardSzalay.MockHttp;
 using Shouldly;
 using Xunit;
 
-namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests
+namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.QueryStringTests
 {
     public class GetNearestPlacesMatrixAsyncQueryStringTests
     {

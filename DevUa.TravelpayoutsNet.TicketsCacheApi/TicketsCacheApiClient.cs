@@ -24,7 +24,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
         private readonly HttpClient _client;
 
         /// <summary>
-        /// The constructor
+        /// The full constructor
         /// </summary>
         /// <see href="https://www.travelpayouts.com/developers/api"/>
         /// <param name="token">Your API token.</param>

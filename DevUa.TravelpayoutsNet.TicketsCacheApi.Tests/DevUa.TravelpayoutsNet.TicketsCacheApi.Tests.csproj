@@ -10,9 +10,11 @@
     <OutputType>Exe</OutputType>
 
     <StartupObject />
+    <DebugType>Full</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ApiResponses\LatestSuccess.gzip.json" />
     <None Remove="ApiResponses\LatestSuccess.json" />
     <None Remove="ApiResponses\MonthMatrixSuccess.json" />
     <None Remove="ApiResponses\NearestPlacesMatrixSuccess.json" />
@@ -31,6 +33,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="ApiResponses\LatestSuccess.json" />
+    <EmbeddedResource Include="ApiResponses\LatestSuccess.gzip.json" />
     <EmbeddedResource Include="ApiResponses\MonthMatrixSuccess.json" />
     <EmbeddedResource Include="ApiResponses\NearestPlacesMatrixSuccess.json" />
     <EmbeddedResource Include="ApiResponses\Unauthorized.json" />
