@@ -19,7 +19,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.ApiGetMethodTests
         {
             mockHttp
                 .When(ApiEndPoints.ApiBaseUrl + apiEndPoing)
-                .Respond("application/json", JsonResponseHelper.GetJsonResponse(jsonResponseFile))
+                .Respond(RequestStrings.ApplicationJson, JsonResponseHelper.GetJsonResponse(jsonResponseFile))
                 ;
         }
 

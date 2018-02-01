@@ -21,12 +21,12 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.QueryStringTests
                 .Expect(ApiEndPoints.ApiBaseUrl + ApiEndPoints.Latest)
                 .WithHeaders(new Dictionary<string, string>
                 {
-                    { "X-Access-Token", ApiToken },
-                    { "Accept", "application/json" }
+                    { RequestStrings.AccessToken, ApiToken },
+                    { "Accept", RequestStrings.ApplicationJson }
                 })
-                .Respond("application/json", JsonResponseHelper.GetJsonResponse("LatestSuccess"))
+                .Respond(RequestStrings.ApplicationJson, JsonResponseHelper.GetJsonResponse("LatestSuccess"))
             ;
-            var apiClient = new TicketsCacheApiClient(ApiToken, false, false, mockHttp.ToHttpClient());
+            var apiClient = new TicketsCacheApiClient(ApiToken, mockHttp.ToHttpClient(), false, false);
 
             await apiClient.GetLatestAsync();
 
@@ -44,9 +44,9 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.QueryStringTests
                 {
                     { QueryParams.Token, ApiToken },
                 })
-                .Respond("application/json", JsonResponseHelper.GetJsonResponse("LatestSuccess"))
+                .Respond(RequestStrings.ApplicationJson, JsonResponseHelper.GetJsonResponse("LatestSuccess"))
             ;
-            var apiClient = new TicketsCacheApiClient(ApiToken, false, true, mockHttp.ToHttpClient());
+            var apiClient = new TicketsCacheApiClient(ApiToken, mockHttp.ToHttpClient(), false, true);
 
             await apiClient.GetLatestAsync();
 
@@ -66,10 +66,10 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.QueryStringTests
                     { QueryParams.Destination, "BKK" },
                     { QueryParams.PeriodType, "year" },
                 })
-                .Respond("application/json", JsonResponseHelper.GetJsonResponse("LatestSuccess"))
+                .Respond(RequestStrings.ApplicationJson, JsonResponseHelper.GetJsonResponse("LatestSuccess"))
             ;
             var httpClient = mockHttp.ToHttpClient();
-            var apiClient = new TicketsCacheApiClient(ApiToken, false, false, httpClient);
+            var apiClient = new TicketsCacheApiClient(ApiToken, httpClient, false, false);
 
             var tickets = await apiClient.GetLatestAsync(originIata: "KBP", desinationIata: "BKK", periodTypeMonth: false);
 
@@ -100,13 +100,13 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.QueryStringTests
                 })
                 .WithHeaders(new Dictionary<string, string>
                 {
-                    { "X-Access-Token", ApiToken },
-                    { "Accept", "application/json" }
+                    { RequestStrings.AccessToken, ApiToken },
+                    { "Accept", RequestStrings.ApplicationJson }
                 })
-                .Respond("application/json", JsonResponseHelper.GetJsonResponse("LatestSuccess"))
+                .Respond(RequestStrings.ApplicationJson, JsonResponseHelper.GetJsonResponse("LatestSuccess"))
             ;
             var httpClient = mockHttp.ToHttpClient();
-            var apiClient = new TicketsCacheApiClient(ApiToken, false, false, httpClient);
+            var apiClient = new TicketsCacheApiClient(ApiToken, httpClient, false, false);
 
             var tickets = await apiClient.GetLatestAsync(
                 currency: Enums.Currency.Usd,

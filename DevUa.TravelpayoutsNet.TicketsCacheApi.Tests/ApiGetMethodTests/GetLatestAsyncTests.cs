@@ -14,7 +14,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.ApiGetMethodTests
         public async Task GetLatestAsyncShouldReturnTicketArray()
         {
             SetupMockHttp(ApiEndPoints.Latest, "LatestSuccess");
-            var apiClient = new TicketsCacheApiClient(GetTokenFixture(), false, false, mockHttp.ToHttpClient());
+            var apiClient = new TicketsCacheApiClient(GetTokenFixture(), mockHttp.ToHttpClient(), false, false);
 
             var tickets = await apiClient.GetLatestAsync();
 
@@ -30,7 +30,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.ApiGetMethodTests
                 .When(ApiEndPoints.ApiBaseUrl + ApiEndPoints.Latest)
                 .Respond("application/gzip", JsonResponseHelper.GetStreamResponse("LatestSuccess.gzip"))
             ;
-            var apiClient = new TicketsCacheApiClient(GetTokenFixture(), true, false, mockHttp.ToHttpClient());
+            var apiClient = new TicketsCacheApiClient(GetTokenFixture(), mockHttp.ToHttpClient(), true, false);
 
             var tickets = await apiClient.GetLatestAsync();
 
@@ -44,7 +44,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.ApiGetMethodTests
         {
             SetupMockHttp(ApiEndPoints.Latest, "Unauthorized");
 
-            var apiClient = new TicketsCacheApiClient(GetTokenFixture(), false, false, mockHttp.ToHttpClient());
+            var apiClient = new TicketsCacheApiClient(GetTokenFixture(), mockHttp.ToHttpClient(), false, false);
 
             apiClient.GetLatestAsync().ShouldThrow(typeof(TicketsCacheApiException));
 

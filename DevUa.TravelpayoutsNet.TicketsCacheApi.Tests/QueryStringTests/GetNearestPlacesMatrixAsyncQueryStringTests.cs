@@ -22,11 +22,11 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.QueryStringTests
                 .WithHeaders(new Dictionary<string, string>
                 {
                     { "X-Access-Token", ApiToken },
-                    { "Accept", "application/json" }
+                    { "Accept", RequestStrings.ApplicationJson }
                 })
-                .Respond("application/json", JsonResponseHelper.GetJsonResponse("NearestPlacesMatrixSuccess"))
+                .Respond(RequestStrings.ApplicationJson, JsonResponseHelper.GetJsonResponse("NearestPlacesMatrixSuccess"))
             ;
-            var apiClient = new TicketsCacheApiClient(ApiToken, false, false, mockHttp.ToHttpClient());
+            var apiClient = new TicketsCacheApiClient(ApiToken, mockHttp.ToHttpClient(), false, false);
 
             await apiClient.GetNearestPlacesMatrixAsync();
 
@@ -44,9 +44,9 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.QueryStringTests
                 {
                     { QueryParams.Token, ApiToken },
                 })
-                .Respond("application/json", JsonResponseHelper.GetJsonResponse("NearestPlacesMatrixSuccess"))
+                .Respond(RequestStrings.ApplicationJson, JsonResponseHelper.GetJsonResponse("NearestPlacesMatrixSuccess"))
             ;
-            var apiClient = new TicketsCacheApiClient(ApiToken, false, true, mockHttp.ToHttpClient());
+            var apiClient = new TicketsCacheApiClient(ApiToken, mockHttp.ToHttpClient(), false, true);
 
             await apiClient.GetNearestPlacesMatrixAsync();
 
@@ -65,10 +65,10 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.QueryStringTests
                     { QueryParams.Origin, "KBP" },
                     { QueryParams.Destination, "BKK" },
                 })
-                .Respond("application/json", JsonResponseHelper.GetJsonResponse("NearestPlacesMatrixSuccess"))
+                .Respond(RequestStrings.ApplicationJson, JsonResponseHelper.GetJsonResponse("NearestPlacesMatrixSuccess"))
             ;
             var httpClient = mockHttp.ToHttpClient();
-            var apiClient = new TicketsCacheApiClient(ApiToken, false, false, httpClient);
+            var apiClient = new TicketsCacheApiClient(ApiToken, httpClient, false, false);
 
             var tickets = await apiClient.GetNearestPlacesMatrixAsync(originIata: "KBP", desinationIata: "BKK");
 
@@ -99,12 +99,12 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.QueryStringTests
                 .WithHeaders(new Dictionary<string, string>
                 {
                     { "X-Access-Token", ApiToken },
-                    { "Accept", "application/json" }
+                    { "Accept", RequestStrings.ApplicationJson }
                 })
-                .Respond("application/json", JsonResponseHelper.GetJsonResponse("NearestPlacesMatrixSuccess"))
+                .Respond(RequestStrings.ApplicationJson, JsonResponseHelper.GetJsonResponse("NearestPlacesMatrixSuccess"))
             ;
             var httpClient = mockHttp.ToHttpClient();
-            var apiClient = new TicketsCacheApiClient(ApiToken, false, false, httpClient);
+            var apiClient = new TicketsCacheApiClient(ApiToken, httpClient, false, false);
 
             var tickets = await apiClient.GetNearestPlacesMatrixAsync(
                 currency: Enums.Currency.Usd,

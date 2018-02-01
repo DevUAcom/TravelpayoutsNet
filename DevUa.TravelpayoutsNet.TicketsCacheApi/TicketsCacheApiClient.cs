@@ -17,37 +17,46 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
 {
     public class TicketsCacheApiClient
     {
-        private readonly StringWithQualityHeaderValue _gzipEncodingValue = new StringWithQualityHeaderValue("gzip");
-        private readonly string _token;
-        private readonly bool _acceptGzip;
-        private readonly bool _sendTokenInQueryString;
-        private readonly HttpClient _client;
+        private readonly string token;
+        private readonly bool acceptGzip;
+        private readonly bool sendTokenInQueryString;
+        private readonly HttpClient client;
 
         /// <summary>
         /// The full constructor
         /// </summary>
         /// <see href="https://www.travelpayouts.com/developers/api"/>
         /// <param name="token">Your API token.</param>
+        /// <param name="client">(optional) HttpClient object</param>
         /// <param name="acceptGzip">Whether accept the GZip format. The default is true</param>
         /// <param name="sendTokenInQueryString">If false (default) the token will be send in the header (recommended). If true the token will be send in the query string.</param>
-        /// <param name="client">(optional) HttpClient object</param>
-        public TicketsCacheApiClient(string token, bool acceptGzip = true, bool sendTokenInQueryString = false, HttpClient client = null)
+        public TicketsCacheApiClient(string token, HttpClient client, bool acceptGzip = true, bool sendTokenInQueryString = false)
         {
-            _token = token;
-            _acceptGzip = acceptGzip;
-            _sendTokenInQueryString = sendTokenInQueryString;
+            if (String.IsNullOrEmpty(token))
+            {
+                throw new ArgumentException("You must pass your token!", nameof(token));
+            }
 
-            _client = client ?? new HttpClient();
-            _client.BaseAddress = new Uri(ApiEndPoints.ApiBaseUrl);
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client), "You must pass instance of HttpClient!");
+            }
+
+            this.token = token;
+            this.acceptGzip = acceptGzip;
+            this.sendTokenInQueryString = sendTokenInQueryString;
+
+            this.client = client;
+            this.client.BaseAddress = new Uri(ApiEndPoints.ApiBaseUrl);
+            this.client.DefaultRequestHeaders.Accept.Clear();
+            this.client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(RequestStrings.ApplicationJson));
             if(acceptGzip)
             {
-                _client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+                this.client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue(RequestStrings.Gzip));
             }
             if(!sendTokenInQueryString)
             {
-                _client.DefaultRequestHeaders.Add("X-Access-Token", _token);
+                this.client.DefaultRequestHeaders.Add(RequestStrings.AccessToken, this.token);
             }
         }
 
@@ -190,7 +199,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
         private async Task<T> GetApiResponse<T>(string apiMethodName, NameValueCollection query)
             where T : ApiResponse
         {
-            HttpResponseMessage response = await _client.GetAsync($"{apiMethodName}?{query}");
+            HttpResponseMessage response = await client.GetAsync($"{apiMethodName}?{query}");
             response.EnsureSuccessStatusCode();
 
             string jsonString = await GetJsonString(response);
@@ -212,7 +221,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
         {
             string jsonString;
             using (Stream stream = await response.Content.ReadAsStreamAsync())
-            using (Stream decompressed = _acceptGzip ? new GZipStream(stream, CompressionMode.Decompress) : stream)
+            using (Stream decompressed = acceptGzip ? new GZipStream(stream, CompressionMode.Decompress) : stream)
             using (StreamReader reader = new StreamReader(decompressed))
             {
                 jsonString = reader.ReadToEnd();
@@ -225,9 +234,9 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
         private NameValueCollection GetQueryString()
         {
             var query = HttpUtility.ParseQueryString(String.Empty);
-            if (_sendTokenInQueryString)
+            if (sendTokenInQueryString)
             {
-                query.Add(QueryParams.Token, _token);
+                query.Add(QueryParams.Token, token);
             }
 
             return query;

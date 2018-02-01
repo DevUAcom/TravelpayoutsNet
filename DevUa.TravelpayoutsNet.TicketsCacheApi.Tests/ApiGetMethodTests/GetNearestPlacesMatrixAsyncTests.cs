@@ -14,7 +14,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.ApiGetMethodTests
         public async Task GetNearestPlacesMatrixAsyncShouldReturnTicketArray()
         {
             SetupMockHttp(ApiEndPoints.NearestPlacesMatrix, "NearestPlacesMatrixSuccess");
-            var apiClient = new TicketsCacheApiClient(GetTokenFixture(), false, false, mockHttp.ToHttpClient());
+            var apiClient = new TicketsCacheApiClient(GetTokenFixture(), mockHttp.ToHttpClient(), false, false);
 
             var data = await apiClient.GetNearestPlacesMatrixAsync();
 
@@ -28,7 +28,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.ApiGetMethodTests
         {
             SetupMockHttp(ApiEndPoints.NearestPlacesMatrix, "Unauthorized");
 
-            var apiClient = new TicketsCacheApiClient(GetTokenFixture(), false, false, mockHttp.ToHttpClient());
+            var apiClient = new TicketsCacheApiClient(GetTokenFixture(), mockHttp.ToHttpClient(), false, false);
 
             apiClient.GetNearestPlacesMatrixAsync().ShouldThrow(typeof(TicketsCacheApiException));
 

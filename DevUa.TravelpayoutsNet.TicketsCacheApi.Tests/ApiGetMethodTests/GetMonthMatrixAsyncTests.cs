@@ -14,7 +14,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.ApiGetMethodTests
         public async Task GetMonthMatrixAsyncShouldReturnTicketArray()
         {
             SetupMockHttp(ApiEndPoints.MonthMatrix, "MonthMatrixSuccess");
-            var apiClient = new TicketsCacheApiClient(GetTokenFixture(), false, false, mockHttp.ToHttpClient());
+            var apiClient = new TicketsCacheApiClient(GetTokenFixture(), mockHttp.ToHttpClient(), false, false);
 
             var tickets = await apiClient.GetMonthMatrixAsync();
 
@@ -28,7 +28,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.ApiGetMethodTests
         {
             SetupMockHttp(ApiEndPoints.MonthMatrix, "Unauthorized");
 
-            var apiClient = new TicketsCacheApiClient(GetTokenFixture(), false, false, mockHttp.ToHttpClient());
+            var apiClient = new TicketsCacheApiClient(GetTokenFixture(), mockHttp.ToHttpClient(), false, false);
 
             apiClient.GetMonthMatrixAsync().ShouldThrow(typeof(TicketsCacheApiException));
 
