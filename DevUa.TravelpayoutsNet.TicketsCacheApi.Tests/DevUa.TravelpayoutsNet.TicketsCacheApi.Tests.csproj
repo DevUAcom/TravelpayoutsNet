@@ -14,6 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ApiResponses\CheapSuccess.json" />
     <None Remove="ApiResponses\LatestSuccess.gzip.json" />
     <None Remove="ApiResponses\LatestSuccess.json" />
     <None Remove="ApiResponses\MonthMatrixSuccess.json" />
@@ -32,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="ApiResponses\CheapSuccess.json" />
     <EmbeddedResource Include="ApiResponses\LatestSuccess.json" />
     <EmbeddedResource Include="ApiResponses\LatestSuccess.gzip.json" />
     <EmbeddedResource Include="ApiResponses\MonthMatrixSuccess.json" />

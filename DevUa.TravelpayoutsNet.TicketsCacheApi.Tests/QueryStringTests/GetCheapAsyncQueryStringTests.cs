@@ -8,114 +8,114 @@ using Xunit;
 
 namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.QueryStringTests
 {
-    public class GetNearestPlacesMatrixAsyncQueryStringTests
+    public class GetCheapAsyncQueryStringTests
     {
         private const string ApiToken = "API_TOKEN";
+        private const string Origin = "IEV";
 
         [Fact]
-        public async Task GetNearestPlacesMatrixAsyncShouldNotContainQueryStrings()
+        public async Task GetCheapAsyncShouldContainOriginQueryStrings()
         {
 
             var mockHttp = new MockHttpMessageHandler();
             mockHttp
-                .Expect(ApiEndPoints.ApiBaseUrl + ApiEndPoints.NearestPlacesMatrix)
+                .Expect(ApiEndPoints.ApiBaseUrl + ApiEndPoints.Cheap)
+                .WithExactQueryString(new Dictionary<string, string>()
+                {
+                    { QueryParams.Origin, Origin },
+                })
                 .WithHeaders(new Dictionary<string, string>
                 {
-                    { "X-Access-Token", ApiToken },
+                    { RequestStrings.AccessToken, ApiToken },
                     { "Accept", RequestStrings.ApplicationJson }
                 })
-                .Respond(RequestStrings.ApplicationJson, JsonResponseHelper.GetJsonResponse("NearestPlacesMatrixSuccess"))
+                .Respond(RequestStrings.ApplicationJson, JsonResponseHelper.GetJsonResponse("CheapSuccess"))
             ;
             var apiClient = new TicketsCacheApiClient(ApiToken, mockHttp.ToHttpClient(), false, false);
 
-            await apiClient.GetNearestPlacesMatrixAsync();
+            await apiClient.GetCheapAsync(originIata:Origin);
 
             mockHttp.VerifyNoOutstandingExpectation();
         }
 
         [Fact]
-        public async Task GetNearestPlacesMatrixAsyncShouldContainTokenQueryString()
+        public async Task GetCheapAsyncShouldContainTokenQueryString()
         {
 
             var mockHttp = new MockHttpMessageHandler();
             mockHttp
-                .Expect(ApiEndPoints.ApiBaseUrl + ApiEndPoints.NearestPlacesMatrix)
+                .Expect(ApiEndPoints.ApiBaseUrl + ApiEndPoints.Cheap)
                 .WithExactQueryString(new Dictionary<string, string>()
                 {
                     { QueryParams.Token, ApiToken },
+                    { QueryParams.Origin, Origin },
                 })
-                .Respond(RequestStrings.ApplicationJson, JsonResponseHelper.GetJsonResponse("NearestPlacesMatrixSuccess"))
+                .Respond(RequestStrings.ApplicationJson, JsonResponseHelper.GetJsonResponse("CheapSuccess"))
             ;
             var apiClient = new TicketsCacheApiClient(ApiToken, mockHttp.ToHttpClient(), false, true);
 
-            await apiClient.GetNearestPlacesMatrixAsync();
+            await apiClient.GetCheapAsync(originIata: Origin);
 
             mockHttp.VerifyNoOutstandingExpectation();
         }
 
         [Fact]
-        public async Task GettrixAsyncShouldContainOriginAndDestinationQueryStrings()
+        public async Task GetCheapAsyncShouldContainOriginAndDestinationQueryStrings()
         {
 
             var mockHttp = new MockHttpMessageHandler();
             mockHttp
-                .Expect(ApiEndPoints.ApiBaseUrl + ApiEndPoints.NearestPlacesMatrix)
+                .Expect(ApiEndPoints.ApiBaseUrl + ApiEndPoints.Cheap)
                 .WithExactQueryString(new Dictionary<string, string>()
                 {
                     { QueryParams.Origin, "KBP" },
                     { QueryParams.Destination, "BKK" },
                 })
-                .Respond(RequestStrings.ApplicationJson, JsonResponseHelper.GetJsonResponse("NearestPlacesMatrixSuccess"))
+                .Respond(RequestStrings.ApplicationJson, JsonResponseHelper.GetJsonResponse("CheapSuccess"))
             ;
             var httpClient = mockHttp.ToHttpClient();
             var apiClient = new TicketsCacheApiClient(ApiToken, httpClient, false, false);
 
-            var tickets = await apiClient.GetNearestPlacesMatrixAsync(originIata: "KBP", destinationIata: "BKK");
+            var tickets = await apiClient.GetCheapAsync(originIata: "KBP", destinationIata: "BKK");
 
             tickets.ShouldNotBeNull();
             mockHttp.VerifyNoOutstandingExpectation();
         }
 
         [Fact]
-        public async Task GetNearestPlacesMatrixAsyncShouldContainAllQueryStrings()
+        public async Task GetCheapAsyncShouldContainAllQueryStrings()
         {
             DateTime departDate = new DateTime(2017, 12, 21);
-            DateTime returnDate = new DateTime(2018, 1, 21);
+            DateTime returnDate = new DateTime(2017, 12, 25);
             var mockHttp = new MockHttpMessageHandler();
             mockHttp
-                .Expect(ApiEndPoints.ApiBaseUrl + ApiEndPoints.NearestPlacesMatrix)
+                .Expect(ApiEndPoints.ApiBaseUrl + ApiEndPoints.Cheap)
                 .WithExactQueryString(new Dictionary<string, string>()
                 {
                     { QueryParams.Currency, "Usd" },
                     { QueryParams.Origin, "KBP" },
                     { QueryParams.Destination, "BKK" },
-                    { QueryParams.ShowToAffiliates, "false" },
                     { QueryParams.DepartDate, departDate.ToString("yyyy-MM-dd") },
                     { QueryParams.ReturnDate, returnDate.ToString("yyyy-MM-dd") },
-                    { QueryParams.Distance, "100" },
-                    { QueryParams.Limit, "10" },
-                    { QueryParams.Flexibilty, "7" },
+                    { QueryParams.Page, "1" },
                 })
                 .WithHeaders(new Dictionary<string, string>
                 {
-                    { "X-Access-Token", ApiToken },
+                    { RequestStrings.AccessToken, ApiToken },
                     { "Accept", RequestStrings.ApplicationJson }
                 })
-                .Respond(RequestStrings.ApplicationJson, JsonResponseHelper.GetJsonResponse("NearestPlacesMatrixSuccess"))
+                .Respond(RequestStrings.ApplicationJson, JsonResponseHelper.GetJsonResponse("CheapSuccess"))
             ;
             var httpClient = mockHttp.ToHttpClient();
             var apiClient = new TicketsCacheApiClient(ApiToken, httpClient, false, false);
 
-            var tickets = await apiClient.GetNearestPlacesMatrixAsync(
+            var tickets = await apiClient.GetCheapAsync(
                 currency: Enums.Currency.Usd,
                 originIata: "KBP", 
                 destinationIata: "BKK",
-                showToAffiliates: false,
                 departDate: departDate,
                 returnDate: returnDate,
-                distance: 100,
-                limit: 10,
-                flexibility: 7
+                page: 1
             );
 
             tickets.ShouldNotBeNull();

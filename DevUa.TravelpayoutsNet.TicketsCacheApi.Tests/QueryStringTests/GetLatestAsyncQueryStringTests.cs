@@ -19,6 +19,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.QueryStringTests
             var mockHttp = new MockHttpMessageHandler();
             mockHttp
                 .Expect(ApiEndPoints.ApiBaseUrl + ApiEndPoints.Latest)
+                .WithExactQueryString("")
                 .WithHeaders(new Dictionary<string, string>
                 {
                     { RequestStrings.AccessToken, ApiToken },
@@ -71,7 +72,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.QueryStringTests
             var httpClient = mockHttp.ToHttpClient();
             var apiClient = new TicketsCacheApiClient(ApiToken, httpClient, false, false);
 
-            var tickets = await apiClient.GetLatestAsync(originIata: "KBP", desinationIata: "BKK", periodTypeMonth: false);
+            var tickets = await apiClient.GetLatestAsync(originIata: "KBP", destinationIata: "BKK", periodTypeMonth: false);
 
             tickets.ShouldNotBeNull();
             mockHttp.VerifyNoOutstandingExpectation();
@@ -111,7 +112,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi.Tests.QueryStringTests
             var tickets = await apiClient.GetLatestAsync(
                 currency: Enums.Currency.Usd,
                 originIata: "KBP", 
-                desinationIata: "BKK",
+                destinationIata: "BKK",
                 beginningOfPeriod: beginningOfPeriod,
                 periodTypeMonth: true,
                 oneWay: true,

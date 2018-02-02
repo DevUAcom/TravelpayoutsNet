@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.IO.Compression;
@@ -68,7 +69,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
         /// <see href="https://support.travelpayouts.com/hc/en-us/articles/203956163-Travel-insights-with-Travelpayouts-Data-API#the_prices_for_the_airline_tickets"/>
         /// <param name="currency">The currency of the airline ticket</param>
         /// <param name="originIata">The point of departure. The IATA city code or the country code. The length - from 2 to 3 symbols.</param>
-        /// <param name="desinationIata">The point of destination. The IATA city code or the country code. The length - from 2 to 3 symbols.</param>
+        /// <param name="destinationIata">The point of destination. The IATA city code or the country code. The length - from 2 to 3 symbols.</param>
         /// <param name="beginningOfPeriod">The beginning of the period, within which the dates of departure fall. Must be specified if period_type is equal to month.</param>
         /// <param name="periodTypeMonth">The period for which the tickets have been found. If true - for a month, else - for the whole time</param>
         /// <param name="oneWay">If true - one way tickets, else - round trip</param>
@@ -81,7 +82,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
         public async Task<Ticket[]> GetLatestAsync(
             Currency? currency = null,
             string originIata = null,
-            string desinationIata = null,
+            string destinationIata = null,
             DateTime? beginningOfPeriod = null,
             bool? periodTypeMonth = null,
             bool? oneWay = null,
@@ -102,7 +103,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
             query
                 .AddValueIfNotNull(QueryParams.Currency, currency)
                 .AddValueIfNotNull(QueryParams.Origin, originIata)
-                .AddValueIfNotNull(QueryParams.Destination, desinationIata)
+                .AddValueIfNotNull(QueryParams.Destination, destinationIata)
                 .AddValueIfNotNull(QueryParams.BeginningOfPeriod, beginningOfPeriod)
                 .AddValueIfNotNull(QueryParams.PeriodType, periodTypeMonth.HasValue ? periodTypeMonth.Value ? "month" : "year" : null)
                 .AddValueIfNotNull(QueryParams.OneWay, oneWay)
@@ -124,14 +125,14 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
         /// <see href="https://support.travelpayouts.com/hc/en-us/articles/203956163#the_calendar_of_prices_for_a_month"/>
         /// <param name="currency">The currency of the airline ticket</param>
         /// <param name="originIata">The point of departure. The IATA city code or the country code. The length - from 2 to 3 symbols.</param>
-        /// <param name="desinationIata">The point of destination. The IATA city code or the country code. The length - from 2 to 3 symbols.</param>
+        /// <param name="destinationIata">The point of destination. The IATA city code or the country code. The length - from 2 to 3 symbols.</param>
         /// <param name="showToAffiliates">False - all the prices, true - just the prices, found using the partner marker (recommended). </param>
         /// <param name="month">The beginning of the month</param>
         /// <returns>Array of Ticket objects</returns>
         public async Task<Ticket[]> GetMonthMatrixAsync(
             Currency? currency = null,
             string originIata = null,
-            string desinationIata = null,
+            string destinationIata = null,
             bool? showToAffiliates = null,
             DateTime? month = null
         )
@@ -141,7 +142,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
             query
                 .AddValueIfNotNull(QueryParams.Currency, currency)
                 .AddValueIfNotNull(QueryParams.Origin, originIata)
-                .AddValueIfNotNull(QueryParams.Destination, desinationIata)
+                .AddValueIfNotNull(QueryParams.Destination, destinationIata)
                 .AddValueIfNotNull(QueryParams.ShowToAffiliates, showToAffiliates)
                 .AddValueIfNotNull(QueryParams.Month, month)
                 ;
@@ -157,7 +158,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
         /// <see href="https://support.travelpayouts.com/hc/en-us/articles/203956163#the_prices_for_the_alternative_directions"/>
         /// <param name="currency">The currency of the airline ticket</param>
         /// <param name="originIata">The point of departure. The IATA city code or the country code. The length - from 2 to 3 symbols.</param>
-        /// <param name="desinationIata">The point of destination. The IATA city code or the country code. The length - from 2 to 3 symbols.</param>
+        /// <param name="destinationIata">The point of destination. The IATA city code or the country code. The length - from 2 to 3 symbols.</param>
         /// <param name="showToAffiliates">False - all the prices, true - just the prices, found using the partner marker (recommended). </param>
         /// <param name="departDate">The month of departure</param>
         /// <param name="returnDate"></param>
@@ -168,7 +169,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
         public async Task<DetailDataResponse> GetNearestPlacesMatrixAsync(
             Currency? currency = null,
             string originIata = null,
-            string desinationIata = null,
+            string destinationIata = null,
             bool? showToAffiliates = null,
             DateTime? departDate = null,
             DateTime? returnDate = null,
@@ -182,7 +183,7 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
             query
                 .AddValueIfNotNull(QueryParams.Currency, currency)
                 .AddValueIfNotNull(QueryParams.Origin, originIata)
-                .AddValueIfNotNull(QueryParams.Destination, desinationIata)
+                .AddValueIfNotNull(QueryParams.Destination, destinationIata)
                 .AddValueIfNotNull(QueryParams.ShowToAffiliates, showToAffiliates)
                 .AddValueIfNotNull(QueryParams.DepartDate, departDate)
                 .AddValueIfNotNull(QueryParams.ReturnDate, returnDate)
@@ -192,6 +193,46 @@ namespace DevUa.TravelpayoutsNet.TicketsCacheApi
                 ;
 
             var apiResponse = await GetApiResponse<ApiDetailResponse>(ApiEndPoints.NearestPlacesMatrix, query);
+
+            return apiResponse.Data;
+        }
+
+        /// <summary>
+        /// Returns the cheapest non-stop tickets, as well as tickets with 1 or 2 stops, for the selected route with departure/return date filters.
+        /// </summary>
+        /// <see href="https://support.travelpayouts.com/hc/en-us/articles/203956163-Travel-insights-with-Travelpayouts-Data-API#cheapest_tickets"/>
+        /// <param name="originIata">The point of departure. The IATA city code or the country code. The length - from 2 to 3 symbols.</param>
+        /// <param name="destinationIata">The point of destination. The IATA city code or the country code. The length - from 2 to 3 symbols.</param>
+        /// <param name="departDate">The month of departure</param>
+        /// <param name="returnDate"></param>
+        /// <param name="currency">The currency of the airline ticket</param>
+        /// <param name="page">The page number</param>
+        public async Task<Dictionary<string, Dictionary<string, V1ApiTicket>>> GetCheapAsync(
+            string originIata,
+            string destinationIata = null,
+            DateTime? departDate = null,
+            DateTime? returnDate = null,
+            Currency? currency = null,
+            int? page = null
+        )
+        {
+            if (String.IsNullOrEmpty(originIata))
+            {
+                throw new ArgumentException($"{nameof(originIata)} must be specified!", nameof(originIata));
+            }
+
+            var query = GetQueryString();
+
+            query
+                .AddValueIfNotNull(QueryParams.Currency, currency)
+                .AddValueIfNotNull(QueryParams.Origin, originIata)
+                .AddValueIfNotNull(QueryParams.Destination, destinationIata)
+                .AddValueIfNotNull(QueryParams.DepartDate, departDate)
+                .AddValueIfNotNull(QueryParams.ReturnDate, returnDate)
+                .AddValueIfNotNull(QueryParams.Page, page)
+                ;
+
+            var apiResponse = await GetApiResponse<V1ApiResponse>(ApiEndPoints.Cheap, query);
 
             return apiResponse.Data;
         }
